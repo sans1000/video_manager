@@ -1,0 +1,61 @@
+# video_manager 配置示例
+#
+# 用法：复制成 vm_config.toml 再改（vm_config.toml 不进仓库，因为它带你本机的路径）。
+# 所有相对路径都相对本文件所在目录，不受当前工作目录影响。
+# 命令行参数优先级更高：--root / --db 会覆盖这里的设置。
+
+[library]
+# 要管理的文件夹，可以写多个。命令行 --root 可临时覆盖。
+roots = [
+    'D:\Videos',
+    # 'F:\myphone',        # 可以放多个
+]
+recurse = true
+
+# 额外要跳过的目录名（不区分大小写）。内置已经跳过
+# $RECYCLE.BIN / System Volume Information 等系统目录。
+exclude_dirs = []
+
+# 额外要跳过的文件名通配符，例如 ['*.tmp', 'Thumbs.db']
+exclude_globs = []
+
+[probe]
+# 留空 = 自动查找：先看程序旁边的 ffmpeg.exe，再看内置候选列表，最后找 PATH。
+ffprobe = ''
+ffmpeg  = ''
+timeout_sec = 60
+probe_images = false   # 图片默认不探测，扫描更快
+workers = 4
+
+[hash]
+# blake2b（快）/ md5 / sha1 / sha256
+algo = 'blake2b'
+chunk_size = 1048576   # 1 MiB
+workers = 4
+
+[dupes]
+min_size = 1           # 小于该字节数的文件不参与查重（命令行默认 1MB）
+use_quick_hash = true  # 大小相同 -> 再比首尾各 1MiB
+use_full_hash  = true  # 首尾也相同 -> 最后全文哈希确认
+
+[report]
+out_dir = 'var/report'
+
+[gui]
+# 无边框窗口：去掉 Windows 自带标题栏，自己画「最小化/最大化/关闭」。
+# 如果拖动或缩放不顺手，改成 false（或启动时加 --native-frame）即可回到原生标题栏。
+frameless = true
+# 启动就最大化（占满屏幕可用区域）。想以固定大小启动就改成 false。
+start_maximized = true
+# start_maximized = false 时，窗口大小 = 屏幕可用区域的这个比例，居中显示。
+# 0.5 = 占屏幕一半；想更大写 0.7、0.8。
+window_fraction = 0.5
+
+[tags]
+# 标签是手工数据，磁盘上推导不出来，删库就没了。
+# 所以每次写标签后都会自动导出到这里，可用 vm tag import 恢复。
+backup  = 'var/tags_backup.csv'
+journal = 'var/tag_journal.csv'
+
+[db]
+path = 'var/video_index.db'

@@ -1,0 +1,22 @@
+# ---- 运行数据（本地私有，绝不进仓库）----
+# 索引库、标签备份、改名日志里都是你的文件路径和文件名
+var/
+
+# ---- 本地配置：带本机路径，仓库里只放 vm_config.example.toml ----
+vm_config.toml
+
+# ---- 构建产物 ----
+dist/
+build/
+*.spec.bak
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# ---- 编辑器 / 系统 ----
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
